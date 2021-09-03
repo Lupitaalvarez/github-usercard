@@ -1,8 +1,10 @@
+import axios from 'axios';
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -28,7 +30,8 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
+const followersArray = ['tetondan','dustinmyers','justsml','luishrd','bigknell'];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -58,3 +61,65 @@ const followersArray = [];
     luishrd
     bigknell
 */
+
+followersArray.forEach(follower=>{ 
+  axios.get(`https://api.github.com/users/${follower}`) 
+ 
+ 
+ 
+  .then(info=>{ 
+  const cards = document.querySelector('.cards') 
+  cards.appendChild(makeGithubCard(info.data)) 
+  }) 
+ 
+ 
+ 
+  .catch(error=>{ 
+   console.log(error) 
+  }) 
+  }) 
+ 
+ 
+ 
+ 
+  function makeGithubCard (object) {
+    const cardDiv = document.createElement('div')
+    const cardIMG = document.createElement('img')
+    const infoDiv = document.createElement('div')
+    const headerThree = document.createElement('h3')
+    const firstP = document.createElement('p')
+    const secondP = document.createElement('p')
+    const thirdP = document.createElement('p')
+    const firstLink = document.createElement('a')
+    const fourthP = document.createElement('p')
+    const fifthP = document.createElement('p')
+    const sixthP = document.createElement('p')
+ 
+    cardDiv.classList.add("card")
+    infoDiv.classList.add("card-info")
+    headerThree.classList.add("name")
+    firstP.classList.add("username")
+ 
+    cardDiv.appendChild(cardIMG)
+    cardDiv.appendChild(infoDiv)
+    infoDiv.appendChild(headerThree)
+    infoDiv.appendChild(firstP)
+    infoDiv.appendChild(secondP)
+    infoDiv.appendChild(thirdP)
+    thirdP.appendChild(firstLink)
+    infoDiv.appendChild(fourthP)
+    infoDiv.appendChild(fifthP)
+    infoDiv.appendChild(sixthP)
+ 
+    cardIMG.src = object['avatar_url']
+    headerThree.textContent = object.name
+    firstP.textContent = object.login
+    secondP.textContent = object.location
+    firstLink.setAttribute('href',object.url)
+    firstLink.textContent = object.url
+    fourthP.textContent = `Followers: ${object.followers}`
+    fifthP.textContent = `Following: ${object.following}`
+    sixthP.textContent = object.bio
+ 
+    return cardDiv
+  }
